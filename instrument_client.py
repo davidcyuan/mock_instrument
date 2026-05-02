@@ -85,6 +85,7 @@ with rm.open_resource("TCPIP0::127.0.0.1::5025::SOCKET") as instrument:
     print(instrument.query("*IDN?"))
     print(instrument.query("MEAS:POW?"))
     print(instrument.query("MEAS:VOLT?"))
+    instrument.write("*RST")
 
 
     # ---------------------------------------------------------------------------
