@@ -115,9 +115,23 @@ python instrument_client.py
 
 ## Concepts to be able to explain after this project
 
-1. What problem does VISA solve? (hardware-independent instrument control)
+1. What problem does VISA solve? (hardware-independent instrument control)  
+    VISA allows connections to different types of hardware.
+
 2. What is a VISA resource string and what does each part mean?
-3. What is the difference between a SCPI query and a write command?
-4. What do `read_termination` and `write_termination` do in pyvisa?
-5. What is the difference between `write()`, `read()`, and `query()`?
-6. Why would you use pyvisa-py vs NI-VISA?
+    The address to an instrument. For TCP, its TCPIPO::host::port::SOCKET
+
+3. What is the difference between a SCPI query and a write command?  
+    query will read something in response to the write. write will only send a command, although you can also try to get back a potential error message
+
+4. What do `read_termination` and `write_termination` do in pyvisa?  
+    read_termination: when to stop reading from an instrument
+    write_termination: what to append at the end of a write command
+
+5. What is the difference between `write()`, `read()`, and `query()`?  
+    write(): send command
+    read(): read from instrument, no control
+    query(): send command, then read the response to the command
+
+6. Why would you use pyvisa-py vs NI-VISA?  
+    Much more lightweight/easy to install

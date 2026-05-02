@@ -29,72 +29,76 @@ import pyvisa
 #
 # Hint: to force the pyvisa-py backend use '@py' as the argument.
 
-rm = None  # replace this line
+rm = pyvisa.ResourceManager('@py')
 
 
-# ---------------------------------------------------------------------------
-# Step 2 — Open a VISA resource
-# ---------------------------------------------------------------------------
-# VISA identifies instruments with a resource string. For a raw TCP/IP
-# socket instrument the format is:
-#
-#   TCPIP0::<host>::<port>::SOCKET
-#
-# The fake server listens on 127.0.0.1 port 5025, so the resource string is:
-#
-#   "TCPIP0::127.0.0.1::5025::SOCKET"
-#
-# TODO: open the resource and assign it to `instrument`
-#
-#   instrument = rm.open_resource(...)
+    # ---------------------------------------------------------------------------
+    # Step 2 — Open a VISA resource
+    # ---------------------------------------------------------------------------
+    # VISA identifies instruments with a resource string. For a raw TCP/IP
+    # socket instrument the format is:
+    #
+    #   TCPIP0::<host>::<port>::SOCKET
+    #
+    # The fake server listens on 127.0.0.1 port 5025, so the resource string is:
+    #
+    #   "TCPIP0::127.0.0.1::5025::SOCKET"
+    #
+    # TODO: open the resource and assign it to `instrument`
+    #
+    #   instrument = rm.open_resource(...)
 
-instrument = None  # replace this line
+with rm.open_resource("TCPIP0::127.0.0.1::5025::SOCKET") as instrument:
 
+    # ---------------------------------------------------------------------------
+    # Step 3 — Configure the session
+    # ---------------------------------------------------------------------------
+    # Raw SOCKET resources don't use the VXI-11 protocol, so pyvisa needs to
+    # know what character marks the end of each message.
+    #
+    # TODO: set these two attributes on `instrument`:
+    #
+    #   instrument.read_termination  = "\n"   # server sends newline-terminated responses
+    #   instrument.write_termination = "\n"   # client appends newline to each command
+    #
+    # These tell pyvisa when to stop reading and what to append when writing.
 
-# ---------------------------------------------------------------------------
-# Step 3 — Configure the session
-# ---------------------------------------------------------------------------
-# Raw SOCKET resources don't use the VXI-11 protocol, so pyvisa needs to
-# know what character marks the end of each message.
-#
-# TODO: set these two attributes on `instrument`:
-#
-#   instrument.read_termination  = "\n"   # server sends newline-terminated responses
-#   instrument.write_termination = "\n"   # client appends newline to each command
-#
-# These tell pyvisa when to stop reading and what to append when writing.
-
-
-# ---------------------------------------------------------------------------
-# Step 4 — Send commands and read responses
-# ---------------------------------------------------------------------------
-# pyvisa gives you three key methods:
-#
-#   instrument.write(cmd)      — send a command, don't wait for a response
-#   instrument.read()          — read one response from the instrument
-#   instrument.query(cmd)      — write then immediately read (most common)
-#
-# TODO: use instrument.query() to send "*IDN?" and print the result.
-# TODO: use instrument.query() to read MEAS:POW? and MEAS:VOLT? and print them.
-# TODO: use instrument.write() to send "*RST" (no response expected).
-
-print("=== Connecting to fake instrument ===\n")
-
-# Your code here ...
+    instrument.read_termination = "\n"
+    instrument.write_termination = "\n"
 
 
-# ---------------------------------------------------------------------------
-# Step 5 — Close the session
-# ---------------------------------------------------------------------------
-# Always close resources when you're done. Using a `with` block (context
-# manager) is even better — pyvisa closes automatically on exit.
-#
-# TODO: close the instrument and the ResourceManager.
-#
-#   instrument.close()
-#   rm.close()
-#
-# Bonus: rewrite the whole script using:
-#
-#   with rm.open_resource(...) as instrument:
-#       ...
+    # ---------------------------------------------------------------------------
+    # Step 4 — Send commands and read responses
+    # ---------------------------------------------------------------------------
+    # pyvisa gives you three key methods:
+    #
+    #   instrument.write(cmd)      — send a command, don't wait for a response
+    #   instrument.read()          — read one response from the instrument
+    #   instrument.query(cmd)      — write then immediately read (most common)
+    #
+    # TODO: use instrument.query() to send "*IDN?" and print the result.
+    # TODO: use instrument.query() to read MEAS:POW? and MEAS:VOLT? and print them.
+    # TODO: use instrument.write() to send "*RST" (no response expected).
+
+    print("=== Connecting to fake instrument ===\n")
+
+    print(instrument.query("*IDN?"))
+    print(instrument.query("MEAS:POW?"))
+    print(instrument.query("MEAS:VOLT?"))
+
+
+    # ---------------------------------------------------------------------------
+    # Step 5 — Close the session
+    # ---------------------------------------------------------------------------
+    # Always close resources when you're done. Using a `with` block (context
+    # manager) is even better — pyvisa closes automatically on exit.
+    #
+    # TODO: close the instrument and the ResourceManager.
+    #
+    #   instrument.close()
+    #   rm.close()
+    #
+    # Bonus: rewrite the whole script using:
+    #
+    #   with rm.open_resource(...) as instrument:
+    #       ...
