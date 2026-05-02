@@ -129,9 +129,9 @@ python instrument_client.py
     write_termination: what to append at the end of a write command
 
 5. What is the difference between `write()`, `read()`, and `query()`?  
-    write(): send command
+    write(): send command, no response
     read(): read from instrument, no control
-    query(): send command, then read the response to the command
+    query(): command ends in ?, returns response
 
 6. Why would you use pyvisa-py vs NI-VISA?  
     Much more lightweight/easy to install

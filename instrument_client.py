@@ -32,21 +32,21 @@ import pyvisa
 rm = pyvisa.ResourceManager('@py')
 
 
-    # ---------------------------------------------------------------------------
-    # Step 2 — Open a VISA resource
-    # ---------------------------------------------------------------------------
-    # VISA identifies instruments with a resource string. For a raw TCP/IP
-    # socket instrument the format is:
-    #
-    #   TCPIP0::<host>::<port>::SOCKET
-    #
-    # The fake server listens on 127.0.0.1 port 5025, so the resource string is:
-    #
-    #   "TCPIP0::127.0.0.1::5025::SOCKET"
-    #
-    # TODO: open the resource and assign it to `instrument`
-    #
-    #   instrument = rm.open_resource(...)
+# ---------------------------------------------------------------------------
+# Step 2 — Open a VISA resource
+# ---------------------------------------------------------------------------
+# VISA identifies instruments with a resource string. For a raw TCP/IP
+# socket instrument the format is:
+#
+#   TCPIP0::<host>::<port>::SOCKET
+#
+# The fake server listens on 127.0.0.1 port 5025, so the resource string is:
+#
+#   "TCPIP0::127.0.0.1::5025::SOCKET"
+#
+# TODO: open the resource and assign it to `instrument`
+#
+#   instrument = rm.open_resource(...)
 
 with rm.open_resource("TCPIP0::127.0.0.1::5025::SOCKET") as instrument:
 
